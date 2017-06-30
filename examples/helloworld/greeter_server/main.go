@@ -44,11 +44,9 @@ type server struct{}
 
 // SayHello implements helloworld.GreeterServer
 func (s *server) SayHello(ctx context.Context, in *pb.HelloRequest) (*pb.HelloReply, error) {
-	log.Printf("Greeting: %s", ctx)
         peer, _ := peer.FromContext(ctx)
-
         tlsInfo := peer.AuthInfo.(credentials.TLSInfo);
-	log.Printf("\nGreeting: %s", tlsInfo.State.VerifiedChains[0][0].Subject.CommonName)
+	log.Printf("\nClient Identity is: %s", tlsInfo.State.VerifiedChains[0][0].Subject.CommonName)
 	return &pb.HelloReply{Message: "Heiillo " + in.Name}, nil
 }
 
