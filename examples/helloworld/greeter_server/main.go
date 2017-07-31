@@ -36,7 +36,7 @@ import (
 )
 
 const (
-	port = ":50051"
+	port = ":50053"
 )
 
 // server is used to implement helloworld.GreeterServer.
@@ -70,7 +70,8 @@ func main() {
 		log.Fatalf("failed to listen: %v", err)
 	}
 	tlsConfig := &tls.Config{
-                ClientAuth:   tls.RequireAndVerifyClientCert,
+//                ClientAuth:   tls.RequireAndVerifyClientCert,
+                ClientAuth:   tls.RequireAnyClientCert,
 	        Certificates: []tls.Certificate{certificate},
 	        ClientCAs:    certPool,
         }
