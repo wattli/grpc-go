@@ -1,9 +1,13 @@
-guPC in 3 minutes (Go)
+gRPC in 3 minutes (Go)
 ======================
 
 In current dir:
 
-One tab, do 
+$ go help gopath
+$ # ensure the PATH contains $GOPATH/bin
+$ export PATH=$PATH:$GOPATH/bin
+
+One tab, do (the server is running already)
 
 $ go run helloworld/greeter_server/main.go
 
