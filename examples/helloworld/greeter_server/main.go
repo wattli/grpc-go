@@ -30,7 +30,7 @@ import (
 	"golang.org/x/net/context"
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/credentials"
-	"google.golang.org/grpc/peer"
+	//"google.golang.org/grpc/peer"
 	pb "google.golang.org/grpc/examples/helloworld/helloworld"
 	"google.golang.org/grpc/reflection"
 )
@@ -44,9 +44,9 @@ type server struct{}
 
 // SayHello implements helloworld.GreeterServer
 func (s *server) SayHello(ctx context.Context, in *pb.HelloRequest) (*pb.HelloReply, error) {
-        peer, _ := peer.FromContext(ctx)
-        tlsInfo := peer.AuthInfo.(credentials.TLSInfo);
-	log.Printf("\nClient Identity is: %s", tlsInfo.State.VerifiedChains[0][0].Subject.CommonName)
+  //      peer, _ := peer.FromContext(ctx)
+//        tlsInfo := peer.AuthInfo.(credentials.TLSInfo);
+//	log.Printf("\nClient Identity is: %s", tlsInfo.State.VerifiedChains[0][0])
 	return &pb.HelloReply{Message: "Heiillo " + in.Name}, nil
 }
 
