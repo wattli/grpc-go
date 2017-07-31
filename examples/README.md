@@ -4,7 +4,9 @@ gRPC in 3 minutes (Go)
 In current dir:
 
 $ go help gopath
+
 $ # ensure the PATH contains $GOPATH/bin
+
 $ export PATH=$PATH:$GOPATH/bin
 
 One tab, do (the server is running already)
