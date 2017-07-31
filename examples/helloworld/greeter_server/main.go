@@ -31,8 +31,10 @@ import (
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/credentials"
 	//"google.golang.org/grpc/peer"
+	"google.golang.org/grpc/metadata"
 	pb "google.golang.org/grpc/examples/helloworld/helloworld"
 	"google.golang.org/grpc/reflection"
+	"google.golang.org/grpc/codes"
 )
 
 const (
@@ -47,6 +49,21 @@ func (s *server) SayHello(ctx context.Context, in *pb.HelloRequest) (*pb.HelloRe
   //      peer, _ := peer.FromContext(ctx)
 //        tlsInfo := peer.AuthInfo.(credentials.TLSInfo);
 //	log.Printf("\nClient Identity is: %s", tlsInfo.State.VerifiedChains[0][0])
+	log.Printf("\nClient request is: %s", in.Name)
+
+	md, ok := metadata.FromContext(ctx)
+	if !ok {
+		return nil, grpc.Errorf(codes.Unauthenticated, "valid token required.")
+	}
+
+	jwtToken, ok := md["authorization"]
+	if !ok {
+		log.Printf("\nClient jwt invalid")
+		return nil, grpc.Errorf(codes.Unauthenticated, "valid token required.")
+	} else {
+		log.Printf("\nClient jwt is: %s", jwtToken)
+	}
+
 	return &pb.HelloReply{Message: "Heiillo " + in.Name}, nil
 }
 

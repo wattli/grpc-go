@@ -30,6 +30,7 @@ import (
 	"golang.org/x/net/context"
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/credentials"
+	"google.golang.org/grpc/credentials/oauth"
 	pb "google.golang.org/grpc/examples/helloworld/helloworld"
 )
 
@@ -68,7 +69,7 @@ func main() {
 
 	// Set up a connection to the server.
 	dialOption := grpc.WithTransportCredentials(transportCreds)
-	conn, err := grpc.Dial(address, dialOption)
+	conn, err := grpc.Dial(address, dialOption, grpc.WithPerRPCCredentials(oauth.NewComputeEngine()))
 	if err != nil {
 		log.Fatalf("did not connect: %v", err)
 	}
