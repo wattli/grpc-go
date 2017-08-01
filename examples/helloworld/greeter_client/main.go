@@ -40,6 +40,20 @@ const (
 	defaultName = "world"
 )
 
+type jwtAccess struct {
+		token string
+}
+
+func (j jwtAccess) GetRequestMetadata(ctx context.Context, uri ...string) (map[string]string, error) {
+		return map[string]string{
+				"authorization": token,
+		}, nil
+}
+
+func (j jwtAccess) RequireTransportSecurity() bool {
+		return true
+}
+
 func main() {
 	certificate, err := tls.LoadX509KeyPair(
 		  "client.cert.pem",
@@ -73,7 +87,7 @@ func main() {
 	jwtKey, err := metadata.Get("instance/service-accounts/default/identity?audience=https://www.example.com")
         
 	log.Printf("Greeting2: %s", jwtKey)
-        creds, err := oauth.NewJWTAccessFromKey([]byte(jwtKey))
+        creds := jwtAccess{jwtKey}
 	if err != nil {
           log.Printf("What the fuck")
         }
