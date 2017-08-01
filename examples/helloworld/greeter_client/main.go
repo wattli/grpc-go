@@ -23,7 +23,8 @@ import (
 	"os"
 
 	"crypto/tls"
-        "crypto/x509"
+  "crypto/x509"
+  "cloud.google.com/go/compute/metadata"
 
 	"io/ioutil"
 
@@ -69,7 +70,8 @@ func main() {
 
 	// Set up a connection to the server.
 	dialOption := grpc.WithTransportCredentials(transportCreds)
-	conn, err := grpc.Dial(address, dialOption, grpc.WithPerRPCCredentials(oauth.NewComputeEngine()))
+	jwtKey, err := metadata.Get("instance/service-accounts/default/identity?audience=lita")
+	conn, err := grpc.Dial(address, dialOption, grpc.WithPerRPCCredentials(oauth.NewJWTAccessFromKey([]byte(jwtKey))))
 	if err != nil {
 		log.Fatalf("did not connect: %v", err)
 	}
