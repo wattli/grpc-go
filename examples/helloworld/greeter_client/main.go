@@ -31,7 +31,6 @@ import (
 	"golang.org/x/net/context"
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/credentials"
-	"google.golang.org/grpc/credentials/oauth"
 	pb "google.golang.org/grpc/examples/helloworld/helloworld"
 )
 
@@ -46,7 +45,7 @@ type jwtAccess struct {
 
 func (j jwtAccess) GetRequestMetadata(ctx context.Context, uri ...string) (map[string]string, error) {
 		return map[string]string{
-				"authorization": token,
+				"authorization": j.token,
 		}, nil
 }
 
