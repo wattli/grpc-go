@@ -70,11 +70,19 @@ func main() {
 
 	// Set up a connection to the server.
 	dialOption := grpc.WithTransportCredentials(transportCreds)
-	jwtKey, err := metadata.Get("instance/service-accounts/default/identity?audience=lita")
-	conn, err := grpc.Dial(address, dialOption, grpc.WithPerRPCCredentials(oauth.NewJWTAccessFromKey([]byte(jwtKey))))
+	jwtKey, err := metadata.Get("instance/service-accounts/default/identity?audience=https://www.example.com")
+        
+	log.Printf("Greeting2: %s", jwtKey)
+        creds, err := oauth.NewJWTAccessFromKey([]byte(jwtKey))
+	if err != nil {
+          log.Printf("What the fuck")
+        }
+        log.Printf("Greeting3: %s", creds)
+	conn, err := grpc.Dial(address, dialOption, grpc.WithPerRPCCredentials(creds))
 	if err != nil {
 		log.Fatalf("did not connect: %v", err)
 	}
+        log.Printf("Greeting4: %s", creds)
 	defer conn.Close()
 	c := pb.NewGreeterClient(conn)
 
@@ -84,8 +92,9 @@ func main() {
 		name = os.Args[1]
 	}
 	r, err := c.SayHello(context.Background(), &pb.HelloRequest{Name: name})
+        log.Printf("Greeting5: %s", creds)
 	if err != nil {
-		log.Fatalf("could not greet: %v", err)
+		log.Fatalf("Greeting6 could not greet: %v", err)
 	}
 	log.Printf("Greeting: %s", r.Message)
 }
